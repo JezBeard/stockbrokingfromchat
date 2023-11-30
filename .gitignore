@@ -1,0 +1,6 @@
+AUTOENVINSTALL.bat
+env.bat
+.env
+.secrets.toml
+secrets.toml
+app2.py
