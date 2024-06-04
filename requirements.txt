@@ -11,4 +11,3 @@ altair<5
 tiktoken
 beautifulsoup4
 pycryptodome
-langchain-community
