@@ -16,6 +16,7 @@ from langchain.embeddings import OpenAIEmbeddings
 import os
 import openai
 import time
+import faiss
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
