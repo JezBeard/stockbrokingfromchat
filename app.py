@@ -157,22 +157,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-0 comments on commit 1a1be0b
-@JezBeard
-Comment
- 
-Leave a comment
- 
- You’re receiving notifications because you’re watching this repository.
-Footer
-© 2024 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Docs
-Contact
-Manage cookies
-Do not share my personal information
-Create app.py · JezBeard/stockbrokingfromchat@1a1be0b
