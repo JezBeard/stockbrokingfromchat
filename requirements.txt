@@ -1,5 +1,5 @@
 pip
-langchain==0.0.75
+##langchain==0.0.75
 langchain-openai
 PyPDF2
 python-docx
