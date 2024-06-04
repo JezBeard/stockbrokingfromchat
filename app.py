@@ -121,16 +121,14 @@ def main():
     )
     chunks = text_splitter.split_text(text=st.session_state['text'])  # Use the text from the session state
 
-    #st.write(f'{store_name}')
-
-index_file = f"{store_name}.index"
-if os.path.exists(index_file):
-    loaded_index = faiss.read_index(index_file)
-    VectorStore = FAISS(embeddings.embed_query, loaded_index)
-else:
-    # Handle the case when the index file doesn't exist
-    # For example, you can show an error message or create a new index
-    st.error("Index file not found. Please process the text first.")
+    index_file = f"{store_name}.index"
+    if os.path.exists(index_file):
+        loaded_index = faiss.read_index(index_file)
+        VectorStore = FAISS(embeddings.embed_query, loaded_index)
+    else:
+        # Handle the case when the index file doesn't exist
+        # For example, you can show an error message or create a new index
+        st.error("Index file not found. Please process the text first.")
 
     suggestions = ["", "What is the main topic of the document?", "Summarize the document in 200 words?", "Provide a bullet point list of the key points mentioned in the document?", "Create the headings and subheadings for Powerpoint slides", "Translate the first paragraph to French"]
 
