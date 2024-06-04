@@ -127,11 +127,15 @@ def main():
     index_file = f"{store_name}.index"
     embeddings = OpenAIEmbeddings()
     VectorStore = FAISS.from_texts(chunks, embeddings)
-    VectorStore.save_local(index_file)
+    
+    # Save the index file
+    with open(index_file, 'wb') as f:
+        faiss.write_index(VectorStore.index, faiss.PyCallbackIOWriter(f.write))
 
     index_file = f"{store_name}.index"
     if os.path.exists(index_file):
-        loaded_index = faiss.read_index(index_file)
+        with open(index_file, 'rb') as f:
+            loaded_index = faiss.read_index(faiss.PyCallbackIOReader(f.read))
         VectorStore = FAISS(embeddings.embed_query, loaded_index)
     else:
         # Handle the case when the index file doesn't exist
