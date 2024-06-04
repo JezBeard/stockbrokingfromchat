@@ -1,3 +1,32 @@
+Skip to content
+Navigation Menu
+JezBeard
+/
+stockbrokingfromchat
+
+Type / to search
+
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+Commit
+Create app.py
+ main
+@JezBeard
+JezBeard committed on Dec 1, 2023 
+1 parent 08be58d
+commit 1a1be0b
+Showing 1 changed file with 159 additions and 0 deletions.
+ 159 changes: 159 additions & 0 deletions159  
+app.py
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,159 @@
 import streamlit as st
 import pickle
 import requests
@@ -6,17 +35,15 @@ from docx import Document
 from bs4 import BeautifulSoup
 from streamlit_extras.add_vertical_space import add_vertical_space
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import OpenAIEmbeddings
-from langchain_community.vectorstores import FAISS
-from langchain_community.chat_models import ChatOpenAI
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import FAISS
+from langchain.chat_models import ChatOpenAI
 from langchain.chains.question_answering import load_qa_chain
-from langchain_community.callbacks.manager import get_openai_callback
+from langchain.callbacks import get_openai_callback
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-from langchain.embeddings import OpenAIEmbeddings
 import os
 import openai
 import time
-import faiss
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
@@ -58,7 +85,7 @@ def main():
 
     st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
     st.header("Chat to a Document 💬👨🏻‍💻🤖")
-    
+
     # Add a radio button for the user to select the input method
     input_method = st.radio("Choose your input method:", ("Upload a document", "Paste text or web address"))
 
@@ -83,7 +110,7 @@ def main():
         text_or_url = st.text_area("Paste your text or URL here: URLS must be in format https://")
         process_button = st.button("Process Text")
         store_name = "pasted_text_or_url"
-        
+
         if process_button:
             if text_or_url:
                 # Check if it's a URL
@@ -123,30 +150,18 @@ def main():
     )
     chunks = text_splitter.split_text(text=st.session_state['text'])  # Use the text from the session state
 
-    # Create the index file
-    index_file = f"{store_name}.index"
-    embeddings = OpenAIEmbeddings()
-    VectorStore = FAISS.from_texts(chunks, embeddings)
-    
-    # Save the index file
-    with open(index_file, 'wb') as f:
-        faiss.write_index(VectorStore.index, faiss.PyCallbackIOWriter(f.write))
+    #st.write(f'{store_name}')
 
-    index_file = f"{store_name}.index"
-    if os.path.exists(index_file):
-        with open(index_file, 'rb') as f:
-            loaded_index = faiss.read_index(faiss.PyCallbackIOReader(f.read))
-        VectorStore = FAISS(embeddings.embed_query, loaded_index)
-    else:
-        # Handle the case when the index file doesn't exist
-        # For example, you can show an error message or create a new index
-        st.error("Index file not found. Please process the text first.")
+    embeddings = OpenAIEmbeddings()
+    VectorStore = FAISS.from_texts(chunks, embedding=embeddings)
+    with open(f"{store_name}.pkl", "wb") as f:
+        pickle.dump(VectorStore, f)
+
+    query = st.text_input("Ask question's about your document:")
 
     suggestions = ["", "What is the main topic of the document?", "Summarize the document in 200 words?", "Provide a bullet point list of the key points mentioned in the document?", "Create the headings and subheadings for Powerpoint slides", "Translate the first paragraph to French"]
 
     suggestion = st.selectbox("Or select a suggestion: (ENSURE QUESTION FIELD ABOVE IS BLANK)", suggestions, index=0)
-
-    query = st.text_input("Ask a question about the document:")  # Add this line to define `query`
 
     if query:
         docs = VectorStore.similarity_search(query=query, k=3)
@@ -171,3 +186,22 @@ def main():
 
 if __name__ == '__main__':
     main()
+0 comments on commit 1a1be0b
+@JezBeard
+Comment
+ 
+Leave a comment
+ 
+ You’re receiving notifications because you’re watching this repository.
+Footer
+© 2024 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact
+Manage cookies
+Do not share my personal information
+Create app.py · JezBeard/stockbrokingfromchat@1a1be0b
