@@ -132,9 +132,9 @@ def main():
 
      suggestions = ["", "What is the main topic of the document?", "Summarize the document in 200 words?", "Provide a bullet point list of the key points mentioned in the document?", "Create the headings and subheadings for Powerpoint slides", "Translate the first paragraph to French"]
 
-    suggestion = st.selectbox("Or select a suggestion: (ENSURE QUESTION FIELD ABOVE IS BLANK)", suggestions, index=0)
+     suggestion = st.selectbox("Or select a suggestion: (ENSURE QUESTION FIELD ABOVE IS BLANK)", suggestions, index=0)
 
-    query = st.text_input("Ask a question about the document:")  # Add this line to define `query`
+     query = st.text_input("Ask a question about the document:")  # Add this line to define `query`
 
     if query:
         docs = VectorStore.similarity_search(query=query, k=3)
