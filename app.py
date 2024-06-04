@@ -12,6 +12,7 @@ from langchain_community.chat_models import ChatOpenAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain_community.callbacks.manager import get_openai_callback
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+from langchain.embeddings import OpenAIEmbeddings
 import os
 import openai
 import time
@@ -120,6 +121,12 @@ def main():
         length_function=len
     )
     chunks = text_splitter.split_text(text=st.session_state['text'])  # Use the text from the session state
+
+    # Create the index file
+    index_file = f"{store_name}.index"
+    embeddings = OpenAIEmbeddings()
+    VectorStore = FAISS.from_texts(chunks, embeddings)
+    VectorStore.save_local(index_file)
 
     index_file = f"{store_name}.index"
     if os.path.exists(index_file):
