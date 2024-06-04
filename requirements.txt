@@ -1,11 +1,11 @@
 pip
-langchain
+langchain==0.0.75
 PyPDF2
 python-docx
 python-dotenv
 streamlit
 faiss-cpu
-openai
+openai==0.25.0
 streamlit-extras
 altair<5
 tiktoken
